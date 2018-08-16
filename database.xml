@@ -1,0 +1,27 @@
+<database>
+
+  <name>
+    hackfest_2018
+  </name>
+
+  <user>
+    root
+  </user>
+
+  <password>
+    020493
+  </password>
+
+  <host>
+    127.0.0.1
+  </host>
+
+  <port>
+    3306
+  </port>
+
+  <charset>
+    utf8
+  </charset>
+
+</database>
