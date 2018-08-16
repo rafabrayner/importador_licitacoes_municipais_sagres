@@ -3,26 +3,21 @@ import traceback
 from xml.etree.ElementTree import parse
 
 class Database(object):
-    filename = "database.xml"
 
-    tree = parse(filename)
-    root = tree.getroot()
-
-    db_info = {}
-
-    for info in root:
-        db_info[info.tag] = info.text.strip()
-
-    user = db_info["user"]
-    password = db_info["password"]
-    host = db_info["host"]
-    database = db_info["name"]
-    port = int(db_info["port"])
-    charset = db_info["charset"]
+    @staticmethod
+    def getCredentialsFromXMLFile(file_path):
+        db_info = {}
+        tree = parse(file_path)
+        root = tree.getroot()
+        for info in root:
+            db_info[info.tag] = info.text.strip()
+        db_info["port"] = int(db_info["port"])
+        return db_info
 
 
-    def __init__(self):
-        self.cnx = pymysql.connect(user=self.user, password=self.password, host=self.host, database=self.database, charset=self.charset, port=self.port)
+    def __init__(self, db_file_credentials_path):
+        db_info = Database.getCredentialsFromXMLFile(db_file_credentials_path)
+        self.cnx = pymysql.connect(user=db_info["user"], password=db_info["password"], host=db_info["host"], database=db_info["name"], charset=db_info["charset"], port=db_info["port"])
         self.cursor = self.cnx.cursor()
     def query_select(self, sql, values):
         aux = ()

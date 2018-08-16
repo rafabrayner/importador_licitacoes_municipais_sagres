@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys, getopt
+from database import Database
 
 USAGE_MESSAGE = """You have to pass three arguments as shown bellow.
 
@@ -18,34 +19,40 @@ These are the required arguments:
    dbconf              Path to the XML file with your MySql configurations
 """
 
+def convertCSVToMysql(db_conf_path):
+    connection = Database(db_conf_path)
+
 def main(argv):
 
-   licitacao_csv_path = ''
-   participantes_csv_path = ''
-   propostas_csv_path = ''
-   db_conf_path = ''
+    licitacao_csv_path = ''
+    participantes_csv_path = ''
+    propostas_csv_path = ''
+    db_conf_path = ''
 
-   try:
-      opts, args = getopt.getopt(argv,"h",["help=", "licitacoes=", "participantes=", "propostas=", "dbconf="])
-   except getopt.GetoptError:
-      print (USAGE_MESSAGE)
-      sys.exit(2)
+    try:
+        opts, args = getopt.getopt(argv,"h",["help=", "licitacoes=", "participantes=", "propostas=", "dbconf="])
+    except getopt.GetoptError:
+        print (USAGE_MESSAGE)
+        sys.exit(2)
 
-   if not len(opts):
-      print (USAGE_MESSAGE)
+    if not len(opts):
+        print (USAGE_MESSAGE)
+        sys.exit(2)
 
-   for opt, arg in opts:
-      if opt in ("-h", "--help"):
-         print (HELP_MESSAGE)
-         sys.exit()
-      elif opt == "--licitacao":
-         licitacao_csv_path = arg
-      elif opt == "--participantes":
-         participantes_csv_path = arg
-      elif opt == "--propostas":
-         propostas_csv_path = arg
-      elif opt == "--dbconf":
-         db_conf_path = arg
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            print (HELP_MESSAGE)
+            sys.exit()
+        elif opt == "--licitacao":
+            licitacao_csv_path = arg
+        elif opt == "--participantes":
+            participantes_csv_path = arg
+        elif opt == "--propostas":
+            propostas_csv_path = arg
+        elif opt == "--dbconf":
+            db_conf_path = arg
+    
+    convertCSVToMysql(db_conf_path)
    
 
 if __name__ == "__main__":
